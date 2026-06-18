@@ -4,7 +4,7 @@ import cv2
 from collections import deque
 import os
 import subprocess
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 # Constants
 IMAGE_HEIGHT, IMAGE_WIDTH = 64, 64
@@ -20,7 +20,7 @@ CLASSES_LIST = [
 
 @st.cache_resource
 def load_LRCN_model():
-    return load_model("model1.h5")
+    return load_model("model1.h5", compile=False)
 
 def predict_single_action(video_path, model):
     video_reader = cv2.VideoCapture(video_path)

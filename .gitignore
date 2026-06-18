@@ -1,0 +1,13 @@
+# Ignore temporary video processing directories
+video/
+temp/
+samples/
+
+# Ignore python artifacts
+__pycache__/
+*.pyc
+
+# Ignore video files directly in the root
+*.mp4
+*.avi
+*.mov

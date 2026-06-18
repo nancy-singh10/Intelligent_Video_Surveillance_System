@@ -250,13 +250,19 @@ def main():
         with col1:
             st.subheader("📥 Original Video")
             
-            # If the video is an .mp4, it might play natively. If it's an avi/mpeg, it needs conversion.
-            # We'll just safely convert anything to an avc1 mp4 so it always plays in HTML5.
+            # Use ffmpeg to ensure the video is in an html5 compatible format (avc1)
             if not os.path.exists(playable_original_path):
                 with st.spinner("Converting original video to browser-playable format..."):
-                    convert_video_for_browser(temp_video_path, playable_original_path)
+                    subprocess.call([
+                        'ffmpeg', '-y', '-i', temp_video_path,
+                        '-vcodec', 'libx264', '-f', 'mp4', playable_original_path
+                    ])
             
-            st.video(playable_original_path)
+            # Fallback to temp video if ffmpeg completely fails, otherwise play converted
+            if os.path.exists(playable_original_path) and os.path.getsize(playable_original_path) > 0:
+                st.video(playable_original_path)
+            else:
+                st.video(temp_video_path)
 
         with col2:
             st.subheader("🔍 Analysis & Results")
@@ -311,8 +317,19 @@ def main():
                 output_path = os.path.join("video", original_video_name.split('.')[0] + "_output.mp4")
                 annotate_video(temp_video_path, output_path, model)
 
+                # Re-encode output video using ffmpeg for browser compatibility
+                status_text.info("Re-encoding video for browser playback...")
+                final_output_path = os.path.join("video", "playable_" + original_video_name.split('.')[0] + "_output.mp4")
+                subprocess.call([
+                    'ffmpeg', '-y', '-i', output_path,
+                    '-vcodec', 'libx264', '-f', 'mp4', final_output_path
+                ])
+
                 status_text.success("Analysis and Video Generation Complete!")
-                st.video(output_path)
+                if os.path.exists(final_output_path) and os.path.getsize(final_output_path) > 0:
+                    st.video(final_output_path)
+                else:
+                    st.video(output_path)
 
 if __name__ == "__main__":
     main()

@@ -35,7 +35,12 @@ Develop a system that watches video streams and predicts the activity (e.g., run
 - **Classes Used:** 20 out of 50 UCF50 actions
 
 ## 📸 Visual Results
-*(See the repository images for Accuracy & Loss Trends and the UI Dashboard)*
+
+### AI Dashboard UI
+![AI Dashboard UI](assets/ui_dashboard.png)
+
+### Accuracy & Loss Trends
+![Training Trends](assets/training_trends.png)
 
 ## 🧪 Applications
 - 🔍 **Smart Surveillance** → Automated detection of abnormal or suspicious activities.

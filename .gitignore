@@ -1,7 +1,6 @@
 # Ignore temporary video processing directories
 video/
 temp/
-samples/
 
 # Ignore python artifacts
 __pycache__/
